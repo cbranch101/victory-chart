@@ -189,17 +189,23 @@ export const voronoiContainerMixin = (base) => class VictoryVoronoiContainer ext
     const componentProps = labelComponent.props || {};
     const style = this.getStyle(props, points, "labels");
 
-    const labelProps = defaults(
-      {
-        active: true,
-        datum: omit(points[0], ["childName", "style", "continuous"]),
-        flyoutStyle: this.getStyle(props, points, "flyout")[0],
-        renderInPortal: false,
-        scale, style, theme, text
-      },
-      componentProps,
-      this.getDefaultLabelProps(props, points),
-    );
+    const defaultProps = {
+      renderInPortal: false
+    };
+
+    const labelProps = {
+      ...defaultProps,
+      ...componentProps,
+      active: true,
+      flyoutStyle: this.getStyle(props, points, "flyout")[0],
+      datum: omit(points[0], ["childName", "style", "continuous"]),
+      scale,
+      style,
+      theme,
+      text,
+      ...this.getDefaultLabelProps(props, points)
+    };
+
     const labelPosition = this.getLabelPosition(props, points, labelProps);
     return { ...labelPosition, ...labelProps };
   }
